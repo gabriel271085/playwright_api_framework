@@ -22,4 +22,6 @@ test('POST auth should return a token', async ({request}) =>{
     expect(body.token).toBeDefined();
     expect(typeof body.token).toBe('string');
     expect(body.token.length).toBeGreaterThan(0);
+
+
 });

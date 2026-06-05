@@ -27,5 +27,32 @@ export class BookingClient{
         });
 
     }
-    
+
+    async partialUpdateBooking (
+        request: APIRequestContext,
+        bookingId: number,
+        payload: object,
+        token: string
+    ) {
+        return await request.patch(`/booking/${bookingId}`, {
+          headers: {
+                Cookie: `token=${token}`
+            },
+            data: payload,
+        });
+
+    }
+
+    async deleteBooking (
+        request: APIRequestContext,
+        bookingId: number,
+        token: string
+    ) {
+        return await request.delete(`/booking/${bookingId}`, {
+            headers: {
+                Cookie: `token=${token}`
+            }, 
+
+        });
+    }
 }

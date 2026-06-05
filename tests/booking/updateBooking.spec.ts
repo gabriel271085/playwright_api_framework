@@ -46,7 +46,7 @@ test ('PUT booking should update an existing booking', async({request}) =>{
     const token = authBody.token;
 
     const updatedBookingPayload = {
-         firstname: 'Updated Gabriel',
+        firstname: 'Updated Gabriel',
         lastname: 'Updated Cayoja',
         totalprice: 100,
         depositpaid: false,
