@@ -6,8 +6,8 @@ test('POST auth should return a token', async ({request}) =>{
     const authClient = new AuthClient();
 
     const authPayload = {
-        username: 'admin',
-        password: 'password123',
+        username: process.env.AUTH_USERNAME,
+        password: process.env.AUTH_PASSWORD,
     
     };
 
@@ -18,8 +18,9 @@ test('POST auth should return a token', async ({request}) =>{
 
     const body = await response.json();
 
-    console.log(body);
     expect(body.token).toBeDefined();
     expect(typeof body.token).toBe('string');
     expect(body.token.length).toBeGreaterThan(0);
+
+
 });
