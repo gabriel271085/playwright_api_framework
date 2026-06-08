@@ -4,8 +4,8 @@ import { AuthClient } from '../../src/clients/authClient';
 
 test ('DELETE booking should delete an existing booking', async ({request}) =>{
 
-    const bookingClient = new BookingClient;
-    const authClient = new AuthClient;
+    const bookingClient = new BookingClient();
+    const authClient = new AuthClient();
 
      const bookingPayload = {
         firstname: 'Gabriel',
@@ -19,35 +19,11 @@ test ('DELETE booking should delete an existing booking', async ({request}) =>{
         additionalneeds: 'Breakfast',
     };
 
-    const createBookingResponse = await bookingClient.createBooking(
-        request,
-        bookingPayload
-    )
+    const bookingId = await bookingClient.createBookingAndReturnId(request, bookingPayload);
 
+    const token = await authClient.getToken(request);
 
-    const createBookingBody = await createBookingResponse.json();
-
-    const authPayload = {
-        username:'admin',
-        password: 'password123'
-    };
-
-    const authResponse = await authClient.createToken(
-        request,
-        authPayload
-    );
-
-    const authBody = await authResponse.json();
-
-    const token = authBody.token;
-
-    const bookingId = createBookingBody.bookingid;
-
-    const deleteBookingResponse = await bookingClient.deleteBooking (
-            request,
-            bookingId,
-            token
-        )
+    const deleteBookingResponse = await bookingClient.deleteBooking (request, bookingId,token);
 
     expect(deleteBookingResponse.status()).toBe(201);
 });

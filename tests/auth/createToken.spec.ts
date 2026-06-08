@@ -5,13 +5,7 @@ test('POST auth should return a token', async ({request}) =>{
 
     const authClient = new AuthClient();
 
-    const authPayload = {
-        username: 'admin',
-        password: 'password123',
-    
-    };
-
-    const response = await authClient.createToken(request, authPayload);
+    const token = await authClient.getToken(request);
 
    
     expect(response.status()).toBe(200)

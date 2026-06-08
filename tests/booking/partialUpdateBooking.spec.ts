@@ -19,35 +19,15 @@ test ('PATCH booking should update an existing booking partially', async({reques
         additionalneeds: 'Breakfast',
     };
 
-    const createBookingResponse = await bookingClient.createBooking(
-            request,
-            bookingPayload
-        );
+    const bookingId = await bookingClient.createBookingAndReturnId(request, bookingPayload);
 
-    const createBookingBody = await createBookingResponse.json();
-
-    const bookingId = createBookingBody.bookingid;
-
-    const authPayload = {
-        username:'admin',
-        password: 'password123'
-    };
-
-    const authResponse = await authClient.createToken(
-        request,
-        authPayload
-    );
-
-    const authBody = await authResponse.json();
-
-    const token = authBody.token;
+    const token = await authClient.getToken(request);
 
     const partialUpdatedBookingPayload = {
         firstname: 'Updated Gabriel',
     };
 
-    const partialUpdateBookingResponse =
-        await bookingClient.partialUpdateBooking (
+    const partialUpdateBookingResponse = await bookingClient.partialUpdateBooking (
             request,
             bookingId,
             partialUpdatedBookingPayload,
