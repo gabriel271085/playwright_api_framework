@@ -1,25 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { BookingClient } from '../../src/clients/bookingClient';
-import { AuthClient } from '../../src/clients/authClient';
+import { test, expect } from '../../src/fixtures/apiFixtures';
+import { defaultBooking } from '../../src/data/bookingData';
 
-test ('PATCH booking should update an existing booking partially', async({request}) =>{
+test ('PATCH booking should update an existing booking partially', async({request, bookingClient, authClient}) =>{
 
-    const bookingClient = new BookingClient();
-    const authClient = new AuthClient();
-
-    const bookingPayload = {
-        firstname: 'Gabriel',
-        lastname: 'Cayoja',
-        totalprice: 70,
-        depositpaid: true,
-        bookingdates: {
-            checkin: '2026-06-01',
-            checkout: '2026-06-10',
-            },
-        additionalneeds: 'Breakfast',
-    };
-
-    const bookingId = await bookingClient.createBookingAndReturnId(request, bookingPayload);
+    const bookingId = await bookingClient.createBookingAndReturnId(request, defaultBooking);
 
     const token = await authClient.getToken(request);
 
@@ -39,13 +23,13 @@ test ('PATCH booking should update an existing booking partially', async({reques
     const partialUpdateBookingBody = await partialUpdateBookingResponse.json();
 
     expect(partialUpdateBookingBody.firstname).toBe(partialUpdatedBookingPayload.firstname);
-    expect(partialUpdateBookingBody.firstname).not.toBe(bookingPayload.firstname);
+    expect(partialUpdateBookingBody.firstname).not.toBe(defaultBooking.firstname);
     
-    expect(partialUpdateBookingBody.lastname).toBe(bookingPayload.lastname);
-    expect(partialUpdateBookingBody.totalprice).toBe(bookingPayload.totalprice);
-    expect(partialUpdateBookingBody.depositpaid).toBe(bookingPayload.depositpaid);
-    expect(partialUpdateBookingBody.bookingdates.checkin).toBe(bookingPayload.bookingdates.checkin);
-    expect(partialUpdateBookingBody.bookingdates.checkout).toBe(bookingPayload.bookingdates.checkout);
+    expect(partialUpdateBookingBody.lastname).toBe(defaultBooking.lastname);
+    expect(partialUpdateBookingBody.totalprice).toBe(defaultBooking.totalprice);
+    expect(partialUpdateBookingBody.depositpaid).toBe(defaultBooking.depositpaid);
+    expect(partialUpdateBookingBody.bookingdates.checkin).toBe(defaultBooking.bookingdates.checkin);
+    expect(partialUpdateBookingBody.bookingdates.checkout).toBe(defaultBooking.bookingdates.checkout);
 
     
 });

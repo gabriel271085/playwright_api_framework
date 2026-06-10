@@ -1,0 +1,15 @@
+export interface BookingRequest {
+    firstname: string;
+    lastname: string;
+    totalprice: number;
+    depositpaid: boolean;
+
+    bookingdates: {
+        checkin: string;
+        checkout: string;
+    };
+
+    additionalneeds: string;
+}
+
+export type PartialBookingRequest = Partial<BookingRequest>;
