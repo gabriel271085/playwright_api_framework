@@ -1,59 +1,29 @@
-import {test, expect} from '@playwright/test';
-import { AuthClient } from '../../src/clients/authClient';
-import { BookingClient } from '../../src/clients/bookingClient';
+import { test, expect } from '../../src/fixtures/apiFixtures';
+import { defaultBooking, defaultUpdatedBooking } from '../../src/data/bookingData';
 
-test ('PUT booking should update an existing booking', async({request}) =>{
+test ('PUT booking should update an existing booking', async({request, bookingClient, authClient}) =>{
 
-    const bookingClient = new BookingClient();
-    const authClient = new AuthClient();
-
-    const bookingPayload = {
-        firstname: 'Gabriel',
-        lastname: 'Cayoja',
-        totalprice: 70,
-        depositpaid: true,
-        bookingdates: {
-            checkin: '2026-06-01',
-            checkout: '2026-06-10',
-            },
-        additionalneeds: 'Breakfast',
-    };
-    
-    const bookingId = await bookingClient.createBookingAndReturnId(request, bookingPayload);
+    const bookingId = await bookingClient.createBookingAndReturnId(request, defaultBooking);
         
     const token = await authClient.getToken(request);
 
-    const updatedBookingPayload = {
-        firstname: 'Updated Gabriel',
-        lastname: 'Updated Cayoja',
-        totalprice: 100,
-        depositpaid: false,
-        bookingdates: {
-            checkin: '2026-07-01',
-            checkout: '2026-07-10',
-            },
-        additionalneeds: 'Dinner',
-    }
+   
 
     const updateBookingResponse =
-        await bookingClient.updateBooking (
-            request,
-            bookingId,
-            updatedBookingPayload,
-            token
+        await bookingClient.updateBooking (request, bookingId, defaultUpdatedBooking, token
         )
      
     expect (updateBookingResponse.status()).toBe(200);
 
     const updateBookingBody = await updateBookingResponse.json();
 
-    expect(updateBookingBody.firstname).toBe(updatedBookingPayload.firstname);
-    expect(updateBookingBody.lastname).toBe(updatedBookingPayload.lastname);
-    expect(updateBookingBody.totalprice).toBe(updatedBookingPayload.totalprice);
-    expect(updateBookingBody.depositpaid).toBe(updatedBookingPayload.depositpaid);
-    expect(updateBookingBody.bookingdates.checkin).toBe(updatedBookingPayload.bookingdates.checkin);
-    expect(updateBookingBody.bookingdates.checkout).toBe(updatedBookingPayload.bookingdates.checkout);
-    expect(updateBookingBody.additionalneeds).toBe(updatedBookingPayload.additionalneeds);
+    expect(updateBookingBody.firstname).toBe(defaultUpdatedBooking.firstname);
+    expect(updateBookingBody.lastname).toBe(defaultUpdatedBooking.lastname);
+    expect(updateBookingBody.totalprice).toBe(defaultUpdatedBooking.totalprice);
+    expect(updateBookingBody.depositpaid).toBe(defaultUpdatedBooking.depositpaid);
+    expect(updateBookingBody.bookingdates.checkin).toBe(defaultUpdatedBooking.bookingdates.checkin);
+    expect(updateBookingBody.bookingdates.checkout).toBe(defaultUpdatedBooking.bookingdates.checkout);
+    expect(updateBookingBody.additionalneeds).toBe(defaultUpdatedBooking.additionalneeds);
 
 
     

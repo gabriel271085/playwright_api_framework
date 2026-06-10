@@ -1,15 +1,16 @@
 import { APIRequestContext } from "@playwright/test";
+import { BookingRequest, PartialBookingRequest } from '../interfaces/booking.interface';
 
 export class BookingClient{
 
-    async createBooking(request: APIRequestContext,payload: object)
+    async createBooking(request: APIRequestContext,payload: BookingRequest)
      {
     
         return await request.post('/booking', {data:payload});
     
     }
 
-    async createBookingAndReturnId(request: APIRequestContext, payload: object)
+    async createBookingAndReturnId(request: APIRequestContext, payload: BookingRequest)
     {
         const response = await this.createBooking(request, payload);
         
@@ -19,7 +20,7 @@ export class BookingClient{
     }
 
 
-    async updateBooking (request: APIRequestContext, bookingId: number, payload: object, token: string) 
+    async updateBooking (request: APIRequestContext, bookingId: number, payload: BookingRequest, token: string) 
     {
         return await request.put(`/booking/${bookingId}`, {
             headers: {
@@ -33,7 +34,7 @@ export class BookingClient{
     async partialUpdateBooking (
         request: APIRequestContext,
         bookingId: number,
-        payload: object,
+        payload: PartialBookingRequest,
         token: string
     ) {
         return await request.patch(`/booking/${bookingId}`, {

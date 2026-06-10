@@ -1,4 +1,6 @@
 import { APIRequestContext } from "@playwright/test";
+import { AuthRequest } from '../interfaces/auth.interface';
+
 
 export class AuthClient {
 
@@ -11,9 +13,9 @@ export class AuthClient {
     
     async getToken(request: APIRequestContext) {
 
-        const authPayload = {
-            username: process.env.AUTH_USERNAME,
-            password: process.env.AUTH_PASSWORD,
+        const authPayload: AuthRequest  = {
+            username: process.env.AUTH_USERNAME!,
+            password: process.env.AUTH_PASSWORD!,
         };
 
         const response = await this.createToken(request, authPayload);
